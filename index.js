@@ -2,7 +2,6 @@ import Web from 'steamatic'
 import minitmist from 'minimist'
 
 const args = minitmist(process.argv.splice(2))
-args.L = 'mamozor'
 const web = await Web.Basic(args, console.log)
 web.requestHooks.beforeRequest.push((opts, next) => {
   console.log('>', opts.request.url.toString())
