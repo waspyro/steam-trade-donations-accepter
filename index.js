@@ -2,11 +2,9 @@ import Web from 'steamatic'
 import minitmist from 'minimist'
 
 const args = minitmist(process.argv.splice(2))
-const web = await Web.Basic(args, console.log)
-web.requestHooks.beforeRequest.push((opts, next) => {
-  console.log('>', opts.request.url.toString())
-  next()
-})
+const web = await Web.Basic(args, {askFor2FA: true, logOn: false})
+web.setRequestsUrlLogger(true, false)
+await web.logOn()
 
 while(true) {
   const {active} = await web.trade.poll()
@@ -28,8 +26,3 @@ while(true) {
   console.log('accepting this offer may require some time')
   await new Promise(resolve => donation.setSyncInterval(10000).once('completed', resolve))
 }
-
-
-
-
-
